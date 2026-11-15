@@ -135,10 +135,13 @@ jobs:
       - name: Install project dependencies
         run: bundle install
 
-      # Select Xcode 26
-      - name: Select Xcode 26
+      # Find installed Xcode versions
+      - name: Find installed Xcode versions
         run: |
-          sudo xcode-select -s /Applications/Xcode_26.app
+          echo "Installed Xcode versions:"
+          ls -ld /Applications/Xcode*.app || true
+          echo "Currently selected Xcode:"
+          xcode-select -p
           xcodebuild -version
 
       # Sync the GitHub runner clock with the Windows time server (workaround as suggested in https://github.com/actions/runner/issues/2996)
