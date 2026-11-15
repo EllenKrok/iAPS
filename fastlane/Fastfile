@@ -56,6 +56,16 @@ increment_build_number(
   xcodeproj: "#{GITHUB_WORKSPACE}/FreeAPS.xcodeproj",
   build_number: current_build_number
 )
+match(
+  type: "appstore",
+  git_basic_authorization: Base64.strict_encode64("#{GITHUB_REPOSITORY_OWNER}:#{GH_PAT}"),
+  app_identifier: [
+    "#{APP_IDENTIFIER}",
+    "#{APP_IDENTIFIER}.watchkitapp",
+    "#{APP_IDENTIFIER}.watchkitapp.watchkitextension",
+    "#{APP_IDENTIFIER}.LiveActivity"
+  ]
+)
     
     mapping = Actions.lane_context[
       SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING
