@@ -45,40 +45,17 @@ platform :ios do
       key_content: "#{FASTLANE_KEY}"
     )
 
-    previous_build_number = latest_testflight_build_number(
-      app_identifier: "#{APP_IDENTIFIER}",
-      api_key: api_key,
-    )
+previous_build_number = latest_testflight_build_number(
+  app_identifier: "#{APP_IDENTIFIER}",
+  api_key: api_key,
+)
 
-    current_build_number = previous_build_number + 1
+current_build_number = [previous_build_number.to_i, 2].max + 1
 
-    increment_build_number(
-      xcodeproj: "#{GITHUB_WORKSPACE}/FreeAPS.xcodeproj",
-      build_number: current_build_number
-    )      
-    
-    match(
-      type: "appstore",
-      git_basic_authorization: Base64.strict_encode64("#{GITHUB_REPOSITORY_OWNER}:#{GH_PAT}"),
-      app_identifier: [
-        "#{APP_IDENTIFIER}",
-        "#{APP_IDENTIFIER}.watchkitapp",
-        "#{APP_IDENTIFIER}.watchkitapp.watchkitextension",
-        "#{APP_IDENTIFIER}.LiveActivity"
-      ]
-    )
-
-    previous_build_number = latest_testflight_build_number(
-      app_identifier: "#{APP_IDENTIFIER}",
-      api_key: api_key,
-    )
-
-    current_build_number = previous_build_number + 1
-
-    increment_build_number(
-      xcodeproj: "#{GITHUB_WORKSPACE}/FreeAPS.xcodeproj",
-      build_number: current_build_number
-    )
+increment_build_number(
+  xcodeproj: "#{GITHUB_WORKSPACE}/FreeAPS.xcodeproj",
+  build_number: current_build_number
+)
     
     mapping = Actions.lane_context[
       SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING
